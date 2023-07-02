@@ -1,2 +1,2 @@
-# sequel-builder
+# SequelBuilder
  
