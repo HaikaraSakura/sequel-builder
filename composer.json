@@ -1,0 +1,12 @@
+{
+    "name": "haiakra/sequel-builder",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Haikara\\SqlFactory\\": "src/"
+        }
+    },
+    "require": {
+      "php": "^8.0 || ^8.1"
+    }
+}
