@@ -16,7 +16,7 @@ use function is_string;
 abstract class Builder implements BuilderInterface
 {
     protected string $table;
-    protected ?string $alias;
+    protected ?string $alias = null;
     protected string $type;
     protected array $columns = [];
     protected array $join = [];
@@ -49,11 +49,24 @@ abstract class Builder implements BuilderInterface
         return $this->getQuery();
     }
 
-    public function __construct(string $table, ?string $alias = null)
+    public function __construct()
+    {
+        $this->type = $this->getType();
+    }
+
+    public function table(string $table, ?string $alias = null): static
     {
         $this->table = $table;
         $this->alias = $alias;
-        $this->type = $this->getType();
+
+        return $this;
+    }
+
+    public function setAlias(string $alias): static
+    {
+        $this->alias = $alias;
+
+        return $this;
     }
 
     public function when(bool $case, Closure $then, ?Closure $else = null): static

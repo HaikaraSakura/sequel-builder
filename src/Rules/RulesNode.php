@@ -16,9 +16,9 @@ class RulesNode implements StringWithValuesInterface
 
     protected ?Between $between;
 
-    protected int|float|array|string|Stringable|Raw|Select|null $left_value;
+    protected int|float|array|string|Stringable|Raw|Select|null $left_value = null;
 
-    protected int|float|array|string|Stringable|Raw|Select|null $right_value;
+    protected int|float|array|string|Stringable|Raw|Select|null $right_value = null;
 
     protected array $values = [];
 
@@ -28,6 +28,8 @@ class RulesNode implements StringWithValuesInterface
 
     public function setLeft(int|float|array|string|Stringable|Raw|Select|null $value): static
     {
+        $value ??= new Raw('NULL');
+
         if (is_array($value)) {
             $this->values = $value;
         } elseif ($value instanceof Select || $value instanceof Raw) {
@@ -43,6 +45,8 @@ class RulesNode implements StringWithValuesInterface
 
     public function setRight(int|float|array|string|Stringable|Raw|Select|null $value): static
     {
+        $value ??= new Raw('NULL');
+
         if (is_array($value)) {
             $this->values = $value;
         } elseif ($value instanceof Select || $value instanceof Raw) {
@@ -95,7 +99,7 @@ class RulesNode implements StringWithValuesInterface
     {
         $segments = [];
 
-        if (isset($this->left_value) || $this->left_value === null) {
+        if (isset($this->left_value)) {
             $segments[] = match (true) {
                 $this->left_value instanceof Raw => $this->left_value,
                 $this->left_value instanceof Select => "($this->left_value)",
@@ -112,7 +116,7 @@ class RulesNode implements StringWithValuesInterface
             return join(' ', $segments);
         }
 
-        if (isset($this->right_value) || $this->right_value === null) {
+        if (isset($this->right_value)) {
             $segments[] = match (true) {
                 $this->right_value instanceof Raw => $this->right_value,
                 $this->right_value instanceof Select => "($this->right_value)",

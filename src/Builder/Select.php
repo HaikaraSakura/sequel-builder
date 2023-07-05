@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Haikara\SequelBuilder\Builder;
 
+use Haikara\SequelBuilder\Exceptions\QueryBuildException;
 use Haikara\SequelBuilder\Rules\EveryRules;
 
 class Select extends Builder
@@ -13,6 +14,19 @@ class Select extends Builder
         return (clone $this)
             ->columns("COUNT(*) OVER()", ...$this->columns)
             ->limit(1);
+    }
+
+    public function paging(int $current_page, int $limit): static
+    {
+        if ($current_page <= 0) {
+            throw new QueryBuildException("{$current_page}は1以上の整数を指定してください。");
+        }
+
+        if ($limit <= 0) {
+            throw new QueryBuildException("{$limit}は1以上の整数を指定してください。");
+        }
+
+        return $this->limit($limit * ($current_page - 1), $limit);
     }
 
     protected function getType(): string
@@ -56,7 +70,7 @@ class Select extends Builder
     {
         $statements = [$this->type];
 
-        $table = isset($this->alias) ? $this->table : $this->alias;
+        $table = !isset($this->alias) ? $this->table : $this->alias;
         $statements[] = ($this->columns !== []) ? join(', ', $this->columns) : "$table.*";
 
         $statements[] = "FROM $this->table";
