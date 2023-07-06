@@ -6,7 +6,6 @@ use Haikara\SequelBuilder\Builder\Select;
 use Haikara\SequelBuilder\Builder\SQL;
 use Haikara\SequelBuilder\Builder\Update;
 use Haikara\SequelBuilder\Raw;
-use Haikara\SequelBuilder\Rules\EveryRules;
 use Haikara\SequelBuilder\Rules\Rules;
 
 require_once __DIR__ . '/../vendor/autoload.php';
