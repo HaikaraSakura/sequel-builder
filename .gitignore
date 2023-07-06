@@ -1,5 +1,5 @@
 composer.phar
-composer.json
+composer.lock
 /vendor/
 /.idea/
 
